@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: app
+    build: .
+    ports:
+      - 8080:8080
+    restart: on-failure
+    depends_on:
+        - mysql
+    networks:
+      - tasks-net
+
+  mysql:
+    image: mysql:latest
+    container_name: konzekdb
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql-data:/var/lib/mysql
+    networks:
+      - tasks-net
+
+networks:
+  tasks-net:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/mysql
+      o: bind

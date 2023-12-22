@@ -1,0 +1,278 @@
+basePath: /task
+definitions:
+  dto.ListTaskRequest:
+    properties:
+      status:
+        type: string
+    required:
+    - status
+    type: object
+  dto.SetTaskRequest:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+    required:
+    - description
+    - id
+    - status
+    - title
+    type: object
+  dto.TaskResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+    type: object
+  dto.UpdateTaskRequest:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      title:
+        type: string
+    required:
+    - description
+    - id
+    - status
+    - title
+    type: object
+  util.ErrorResponse:
+    properties:
+      error:
+        type: string
+      status:
+        type: integer
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a basic server for managing tasks concurrently. It provides
+    endpoints for creating, updating, deleting, and listing tasks. The server also
+    supports JWT authentication for secure access to the API.
+  title: Task API
+  version: "1.0"
+paths:
+  /delete:
+    delete:
+      consumes:
+      - application/json
+      description: This endpoint is used for deleting a task based on its ID.
+      parameters:
+      - description: Task ID required to delete
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response Body Delete Successfully.
+          schema:
+            type: string
+        "400":
+          description: Bad Request Response. Invalid request parameters.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "404":
+          description: Not Found Response. No task found with the specified ID.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "500":
+          description: Internal Server Error. Server encountered an error.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Task by ID.
+      tags:
+      - Task
+  /generate-jwt:
+    get:
+      consumes:
+      - application/json
+      description: Generating JWT Token for API Authorization.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Token Generating Successfully.
+          schema:
+            type: string
+      summary: Generate JWT
+      tags:
+      - JWT
+  /get:
+    get:
+      consumes:
+      - application/json
+      description: This endpoint is used for retrieving a task based on its ID.
+      parameters:
+      - description: Task ID to retrieve
+        in: query
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response Body. Task details with the specified ID.
+          schema:
+            $ref: '#/definitions/dto.TaskResponse'
+        "400":
+          description: Error Bad Request Response. Invalid request parameters.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "404":
+          description: Error Not Found Response. No task found with the specified
+            ID.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "500":
+          description: Error Internal Server. Server encountered an error.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Task by ID.
+      tags:
+      - Task
+  /list:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is used for retrieving a list of tasks based on their
+        status.
+      parameters:
+      - description: Task List Request Body with Status
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ListTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response Body. List of tasks matching the specified
+            status.
+          schema:
+            items:
+              $ref: '#/definitions/dto.TaskResponse'
+            type: array
+        "400":
+          description: Error Bad Request Response. Invalid request parameters.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "404":
+          description: Error Not Found Response. No tasks found with the specified
+            status.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "500":
+          description: Error Internal Server. Server encountered an error.
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: List Tasks by Status.
+      tags:
+      - Task
+  /set:
+    post:
+      consumes:
+      - application/json
+      description: This endpoint is used for creating a new task.
+      parameters:
+      - description: Task Set Request Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SetTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response Body
+          schema:
+            $ref: '#/definitions/dto.TaskResponse'
+        "400":
+          description: Error Bad Request Response
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "404":
+          description: Error Not Found Response
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "500":
+          description: Error Internal Server
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Task Create.
+      tags:
+      - Task
+  /update:
+    put:
+      consumes:
+      - application/json
+      description: This endpoint is used for updating an existing task.
+      parameters:
+      - description: Task Update Request Body. Take ID and Update Fields
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.UpdateTaskRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success Response Body
+          schema:
+            $ref: '#/definitions/dto.TaskResponse'
+        "400":
+          description: Error Bad Request Response
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "404":
+          description: Error Not Found Response
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+        "500":
+          description: Error Internal Server Response
+          schema:
+            $ref: '#/definitions/util.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Task Update.
+      tags:
+      - Task
+securityDefinitions:
+  BearerAuth:
+    description: Enter the token with the `Bearer ` prefix, e.g. "Bearer abcde12345".
+      Endpoint created for token generating
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

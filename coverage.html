@@ -1,0 +1,1440 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>customerror: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror/customerror.go (100.0%)</option>
+				
+				<option value="file1">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/base.go (100.0%)</option>
+				
+				<option value="file2">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/delete.go (100.0%)</option>
+				
+				<option value="file3">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/get.go (100.0%)</option>
+				
+				<option value="file4">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/list.go (91.7%)</option>
+				
+				<option value="file5">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/set.go (100.0%)</option>
+				
+				<option value="file6">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage/update.go (100.0%)</option>
+				
+				<option value="file7">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/base.go (100.0%)</option>
+				
+				<option value="file8">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/delete.go (100.0%)</option>
+				
+				<option value="file9">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/get.go (100.0%)</option>
+				
+				<option value="file10">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/list.go (88.9%)</option>
+				
+				<option value="file11">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/set.go (77.8%)</option>
+				
+				<option value="file12">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/update.go (100.0%)</option>
+				
+				<option value="file13">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/workerservice/base.go (100.0%)</option>
+				
+				<option value="file14">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/workerservice/handlers.go (53.4%)</option>
+				
+				<option value="file15">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/base.go (100.0%)</option>
+				
+				<option value="file16">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/delete.go (88.1%)</option>
+				
+				<option value="file17">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/get.go (92.7%)</option>
+				
+				<option value="file18">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/list.go (91.7%)</option>
+				
+				<option value="file19">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/set.go (92.3%)</option>
+				
+				<option value="file20">github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/httphandler/update.go (92.3%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package customerror
+
+var (
+        ErrIDNotFound = New("ID not found", false)
+        ErrIDExists   = New("ID exists", false)
+        ErrUnknown    = New("Unknown error", true)
+        ErrDelete     = New("Error while deleting", true)
+        ErrSet        = New("Error while setting", true)
+        ErrUpdate     = New("Error while updating", true)
+        ErrGetAll     = New("Error while getting all", true)
+)
+
+type CustomError interface {
+        Wrap(err error) CustomError
+        Unwrap() error
+        AddData(any) CustomError
+        DestroyData() CustomError
+        Error() string
+}
+
+type Error struct {
+        Err      error
+        Message  string
+        Data     any `json:"-"`
+        Loggable bool
+}
+
+func (e *Error) Wrap(err error) CustomError <span class="cov8" title="1">{
+        e.Err = err
+        return e
+}</span>
+
+func (e *Error) Unwrap() error <span class="cov8" title="1">{
+        return e.Err
+}</span>
+
+func (e *Error) AddData(d any) CustomError <span class="cov8" title="1">{
+        e.Data = d
+        return e
+}</span>
+
+func (e *Error) DestroyData() CustomError <span class="cov8" title="1">{
+        e.Data = nil
+        return e
+}</span>
+
+func (e *Error) Error() string <span class="cov8" title="1">{
+        if e.Err != nil </span><span class="cov8" title="1">{
+                return e.Err.Error() + ", " + e.Message
+        }</span>
+        <span class="cov8" title="1">return e.Message</span>
+}
+
+func New(message string, l bool) CustomError <span class="cov8" title="1">{
+        return &amp;Error{
+                Message:  message,
+                Loggable: l,
+        }
+}</span>
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package taskstorage
+
+import (
+        "database/sql"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+)
+
+type TaskStorer interface {
+        Set(Task) error
+        Get(uint) (Task, error)
+        Update(Task) error
+        Delete(uint) error
+        List(string) ([]Task, error)
+}
+
+type taskStorage struct {
+        db *sql.DB
+}
+
+type TaskStorageOption func(*taskStorage)
+
+func WithTaskDB(db *sql.DB) TaskStorageOption <span class="cov8" title="1">{
+        return func(s *taskStorage) </span><span class="cov8" title="1">{
+                s.db = db
+        }</span>
+}
+
+func NewTaskStorage(opts ...TaskStorageOption) TaskStorer <span class="cov8" title="1">{
+        s := &amp;taskStorage{}
+        for _, opt := range opts </span><span class="cov8" title="1">{
+                opt(s)
+        }</span>
+        <span class="cov8" title="1">return s</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package taskstorage
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "strconv"
+)
+
+func (s *taskStorage) Delete(id uint) error <span class="cov8" title="1">{
+        _, err := s.db.Exec("DELETE FROM tasks WHERE id = ?", id)
+        _id := strconv.Itoa(int(id))
+        if err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("%w", customerror.ErrDelete.AddData("'"+_id+"' could not be deleted."))
+        }</span>
+        <span class="cov8" title="1">return err</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package taskstorage
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "strconv"
+)
+
+func (s *taskStorage) Get(id uint) (Task, error) <span class="cov8" title="1">{
+        task := Task{}
+        err := s.db.QueryRow("SELECT id, title, description, status FROM tasks WHERE id = ?", id).Scan(&amp;task.ID, &amp;task.Title, &amp;task.Description, &amp;task.Status)
+        _id := strconv.Itoa(int(id))
+        if err != nil </span><span class="cov8" title="1">{
+                return Task{}, fmt.Errorf("%w", customerror.ErrIDNotFound.AddData("'"+_id+"' does not exist in the database."))
+        }</span>
+        <span class="cov8" title="1">return task, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package taskstorage
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+)
+
+func (s *taskStorage) List(status string) ([]Task, error) <span class="cov8" title="1">{
+        tasks := make([]Task, 0)
+        rows, err := s.db.Query("SELECT id, title, description, status FROM tasks WHERE status = ?", status)
+        if err != nil </span><span class="cov8" title="1">{
+                return nil, fmt.Errorf("%w", customerror.ErrGetAll.AddData("'"+status+"' could not be listed."))
+        }</span>
+        <span class="cov8" title="1">defer rows.Close()
+        for rows.Next() </span><span class="cov8" title="1">{
+                task := Task{}
+                err := rows.Scan(&amp;task.ID, &amp;task.Title, &amp;task.Description, &amp;task.Status)
+                if err != nil </span><span class="cov0" title="0">{
+                        return nil, fmt.Errorf("%w", customerror.ErrGetAll.AddData("'"+status+"' could not be listed."))
+                }</span>
+                <span class="cov8" title="1">tasks = append(tasks, task)</span>
+        }
+        <span class="cov8" title="1">return tasks, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file5" style="display: none">package taskstorage
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "strconv"
+)
+
+func (s *taskStorage) Set(task Task) error <span class="cov8" title="1">{
+        _, err := s.db.Exec("INSERT INTO tasks (id, title, description, status) VALUES (?, ?, ?, ?)", task.ID, task.Title, task.Description, task.Status)
+        _id := strconv.Itoa(int(task.ID))
+        if err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("%w", customerror.ErrSet.AddData("'"+_id+"' could not be set."))
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file6" style="display: none">package taskstorage
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "strconv"
+)
+
+func (s *taskStorage) Update(task Task) error <span class="cov8" title="1">{
+        _, err := s.db.Exec("UPDATE tasks SET title = ?, description = ?, status = ? WHERE id = ?", task.Title, task.Description, task.Status, task.ID)
+        _id := strconv.Itoa(int(task.ID))
+        if err != nil </span><span class="cov8" title="1">{
+                return fmt.Errorf("%w", customerror.ErrUpdate.AddData("'"+_id+"' could not be updated."))
+        }</span>
+        <span class="cov8" title="1">return nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file7" style="display: none">package taskservice
+
+import (
+        "context"
+        . "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/repository/taskstorage"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+type TaskService interface {
+        Set(context.Context, dto.SetTaskRequest) (dto.TaskResponse, error)
+        Get(context.Context, dto.GetTaskRequest) (dto.TaskResponse, error)
+        List(context.Context, dto.ListTaskRequest) ([]dto.TaskResponse, error)
+        Update(context.Context, dto.UpdateTaskRequest) (dto.TaskResponse, error)
+        Delete(context.Context, dto.DeleteTaskRequest) error
+}
+
+type taskService struct {
+        taskStorage TaskStorer
+}
+
+type TaskServiceOption func(*taskService)
+
+func WithTaskStorage(taskStorage TaskStorer) TaskServiceOption <span class="cov8" title="1">{
+        return func(s *taskService) </span><span class="cov8" title="1">{
+                s.taskStorage = taskStorage
+        }</span>
+}
+
+func NewTaskService(opts ...TaskServiceOption) TaskService <span class="cov8" title="1">{
+        s := &amp;taskService{}
+        for _, opt := range opts </span><span class="cov8" title="1">{
+                opt(s)
+        }</span>
+        <span class="cov8" title="1">return s</span>
+}
+</pre>
+		
+		<pre class="file" id="file8" style="display: none">package taskservice
+
+import (
+        "context"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+func (s *taskService) Delete(ctx context.Context, req dto.DeleteTaskRequest) error <span class="cov8" title="1">{
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov8" title="1">
+                return ctx.Err()</span>
+        default:<span class="cov8" title="1">
+                if _, err := s.taskStorage.Get(req.ID); err != nil </span><span class="cov8" title="1">{
+                        return fmt.Errorf("service.Delete storage.Get: %w", err)
+                }</span>
+                <span class="cov8" title="1">if err := s.taskStorage.Delete(req.ID); err != nil </span><span class="cov8" title="1">{
+                        return fmt.Errorf("service.Delete storage.Delete: %w", err)
+                }</span>
+                <span class="cov8" title="1">return nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file9" style="display: none">package taskservice
+
+import (
+        "context"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+func (s *taskService) Get(ctx context.Context, req dto.GetTaskRequest) (dto.TaskResponse, error) <span class="cov8" title="1">{
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov8" title="1">
+                return dto.TaskResponse{}, ctx.Err()</span>
+        default:<span class="cov8" title="1">
+                task, err := s.taskStorage.Get(req.ID)
+                if err != nil </span><span class="cov8" title="1">{
+                        return dto.TaskResponse{}, fmt.Errorf("service.Get storage.Get: %w", err)
+                }</span>
+                <span class="cov8" title="1">return dto.TaskResponse{
+                        ID:          task.ID,
+                        Title:       task.Title,
+                        Description: task.Description,
+                        Status:      task.Status,
+                }, nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file10" style="display: none">package taskservice
+
+import (
+        "context"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+func (s *taskService) List(ctx context.Context, req dto.ListTaskRequest) ([]dto.TaskResponse, error) <span class="cov8" title="1">{
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov8" title="1">
+                return nil, ctx.Err()</span>
+        default:<span class="cov8" title="1">
+                tasks, err := s.taskStorage.List(req.Status)
+                if err != nil </span><span class="cov8" title="1">{
+                        return nil, fmt.Errorf("service.List storage.List: %w", err)
+                }</span>
+                <span class="cov8" title="1">var taskResponses []dto.TaskResponse
+                for _, task := range tasks </span><span class="cov0" title="0">{
+                        taskResponses = append(taskResponses, dto.TaskResponse{
+                                ID:          task.ID,
+                                Title:       task.Title,
+                                Description: task.Description,
+                                Status:      task.Status,
+                        })
+                }</span>
+                <span class="cov8" title="1">return taskResponses, nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file11" style="display: none">package taskservice
+
+import (
+        "context"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+        "strconv"
+)
+
+func (s *taskService) Set(ctx context.Context, req dto.SetTaskRequest) (dto.TaskResponse, error) <span class="cov8" title="1">{
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov8" title="1">
+                return dto.TaskResponse{}, ctx.Err()</span>
+        default:<span class="cov8" title="1">
+                if _, err := s.taskStorage.Get(req.ID); err == nil </span><span class="cov0" title="0">{
+                        _id := strconv.Itoa(int(req.ID))
+                        return dto.TaskResponse{}, fmt.Errorf("service.Set storage.Get: %w", customerror.ErrIDExists.AddData("'"+_id+"' already exists in the database."))
+                }</span>
+                <span class="cov8" title="1">task := models.Task{
+                        ID:          req.ID,
+                        Title:       req.Title,
+                        Description: req.Description,
+                        Status:      req.Status,
+                }
+                if err := s.taskStorage.Set(task); err != nil </span><span class="cov8" title="1">{
+                        return dto.TaskResponse{}, fmt.Errorf("service.Set storage.Set: %w", err)
+                }</span>
+                <span class="cov8" title="1">return dto.TaskResponse{
+                        ID:          req.ID,
+                        Title:       req.Title,
+                        Description: req.Description,
+                        Status:      req.Status,
+                }, nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file12" style="display: none">package taskservice
+
+import (
+        "context"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+func (s *taskService) Update(ctx context.Context, req dto.UpdateTaskRequest) (dto.TaskResponse, error) <span class="cov8" title="1">{
+        select </span>{
+        case &lt;-ctx.Done():<span class="cov8" title="1">
+                return dto.TaskResponse{}, ctx.Err()</span>
+        default:<span class="cov8" title="1">
+                if _, err := s.taskStorage.Get(req.ID); err != nil </span><span class="cov8" title="1">{
+                        return dto.TaskResponse{}, fmt.Errorf("service.Update storage.Get: %w", err)
+                }</span>
+                <span class="cov8" title="1">task := models.Task{
+                        ID:          req.ID,
+                        Title:       req.Title,
+                        Description: req.Description,
+                        Status:      req.Status,
+                }
+                if err := s.taskStorage.Update(task); err != nil </span><span class="cov8" title="1">{
+                        return dto.TaskResponse{}, fmt.Errorf("service.Update storage.Update: %w", err)
+                }</span>
+                <span class="cov8" title="1">return dto.TaskResponse{
+                        ID:          req.ID,
+                        Title:       req.Title,
+                        Description: req.Description,
+                        Status:      req.Status,
+                }, nil</span>
+        }
+}
+</pre>
+		
+		<pre class="file" id="file13" style="display: none">package workerservice
+
+import (
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice"
+        "log/slog"
+        "os"
+        "sync"
+)
+
+type TaskWorker interface {
+        Submit(models.TaskJobModel) (any, error)
+}
+
+type taskWorker struct {
+        workerCount int
+        logger      *slog.Logger
+        service     taskservice.TaskService
+        ReqChan     chan models.TaskJobModel
+        ResChan     chan any
+        ErrChan     chan error
+        done        chan struct{}
+        Wg          *sync.WaitGroup
+        mu          sync.Mutex
+}
+
+type TaskWorkerOption func(*taskWorker)
+
+func WithWorkerCount(workerCount int) TaskWorkerOption <span class="cov8" title="1">{
+        return func(t *taskWorker) </span><span class="cov8" title="1">{
+                t.workerCount = workerCount
+        }</span>
+}
+
+func WithWaitGroup(wg *sync.WaitGroup) TaskWorkerOption <span class="cov8" title="1">{
+        return func(t *taskWorker) </span><span class="cov8" title="1">{
+                t.Wg = wg
+        }</span>
+}
+
+func WithService(service taskservice.TaskService) TaskWorkerOption <span class="cov8" title="1">{
+        return func(t *taskWorker) </span><span class="cov8" title="1">{
+                t.service = service
+        }</span>
+}
+
+func WithChannel(reqChan chan models.TaskJobModel, resChan chan any, errChan chan error, done chan struct{}) TaskWorkerOption <span class="cov8" title="1">{
+        return func(t *taskWorker) </span><span class="cov8" title="1">{
+                t.ReqChan = reqChan
+                t.ResChan = resChan
+                t.ErrChan = errChan
+                t.done = done
+        }</span>
+}
+
+func StartTaskWorker(opts ...TaskWorkerOption) TaskWorker <span class="cov8" title="1">{
+        tw := &amp;taskWorker{
+                logger: slog.New(slog.NewJSONHandler(os.Stdout, &amp;slog.HandlerOptions{Level: slog.LevelInfo})),
+                mu:     sync.Mutex{},
+        }
+        for _, opt := range opts </span><span class="cov8" title="1">{
+                opt(tw)
+        }</span>
+        <span class="cov8" title="1">for i := 0; i &lt; tw.workerCount; i++ </span><span class="cov8" title="1">{
+                tw.Wg.Add(1)
+                go tw.worker()
+        }</span>
+        <span class="cov8" title="1">return tw</span>
+}
+</pre>
+		
+		<pre class="file" id="file14" style="display: none">package workerservice
+
+import (
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+)
+
+func (t *taskWorker) Submit(f models.TaskJobModel) (any, error) <span class="cov8" title="1">{
+        t.ReqChan &lt;- f
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-f.Context.Done():<span class="cov8" title="1">
+                        return nil, f.Context.Err()</span>
+                case err := &lt;-t.ErrChan:<span class="cov8" title="1">
+                        return nil, err</span>
+                case res := &lt;-t.ResChan:<span class="cov0" title="0">
+                        return res, nil</span>
+                case &lt;-t.done:<span class="cov0" title="0">
+                        t.logger.Info("worker closed while processing the request", "job: ", f.JOB)
+                        return nil, fmt.Errorf("worker closed while processing the request")</span>
+                }
+        }
+}
+
+func (w *taskWorker) get(f models.TaskJobModel) <span class="cov8" title="1">{
+        req := dto.GetTaskRequest{
+                ID: f.ID,
+        }
+        resp, err := w.service.Get(f.Context, req)
+        if err != nil </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov0" title="0">
+                        close(w.ResChan)
+                        close(w.ErrChan)
+                        close(w.ReqChan)
+                        return</span>
+                default:<span class="cov8" title="1">
+                        w.ErrChan &lt;- err
+                        return</span>
+                }
+        }
+        <span class="cov8" title="1">select </span>{
+        case &lt;-w.done:<span class="cov8" title="1">
+                close(w.ResChan)
+                close(w.ErrChan)
+                close(w.ReqChan)
+                return</span>
+        default:<span class="cov0" title="0">
+                w.ResChan &lt;- resp</span>
+        }
+}
+
+func (w *taskWorker) set(f models.TaskJobModel) <span class="cov8" title="1">{
+        req := dto.SetTaskRequest{
+                ID:          f.ID,
+                Title:       f.Title,
+                Description: f.Description,
+                Status:      f.Status,
+        }
+        resp, err := w.service.Set(f.Context, req)
+        if err != nil </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov0" title="0">
+                        close(w.ResChan)
+                        close(w.ErrChan)
+                        close(w.ReqChan)
+                        return</span>
+                default:<span class="cov8" title="1">
+                        w.ErrChan &lt;- err
+                        return</span>
+                }
+        }
+        <span class="cov0" title="0">select </span>{
+        case &lt;-w.done:<span class="cov0" title="0">
+                close(w.ResChan)
+                close(w.ErrChan)
+                close(w.ReqChan)
+                return</span>
+        default:<span class="cov0" title="0">
+                w.ResChan &lt;- resp</span>
+        }
+}
+
+func (w *taskWorker) delete(f models.TaskJobModel) <span class="cov8" title="1">{
+        req := dto.DeleteTaskRequest{
+                ID: f.ID,
+        }
+        err := w.service.Delete(f.Context, req)
+        if err != nil </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov0" title="0">
+                        close(w.ResChan)
+                        close(w.ErrChan)
+                        close(w.ReqChan)
+                        return</span>
+                default:<span class="cov8" title="1">
+                        w.ErrChan &lt;- err
+                        return</span>
+                }
+        }
+        <span class="cov0" title="0">select </span>{
+        case &lt;-w.done:<span class="cov0" title="0">
+                close(w.ResChan)
+                close(w.ErrChan)
+                close(w.ReqChan)
+                return</span>
+        default:<span class="cov0" title="0">
+                w.ResChan &lt;- nil</span>
+        }
+}
+
+func (w *taskWorker) update(f models.TaskJobModel) <span class="cov8" title="1">{
+        req := dto.UpdateTaskRequest{
+                ID:          f.ID,
+                Title:       f.Title,
+                Description: f.Description,
+                Status:      f.Status,
+        }
+        resp, err := w.service.Update(f.Context, req)
+        if err != nil </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov0" title="0">
+                        close(w.ResChan)
+                        close(w.ErrChan)
+                        close(w.ReqChan)
+                        return</span>
+                default:<span class="cov8" title="1">
+                        w.ErrChan &lt;- err
+                        return</span>
+                }
+        }
+        <span class="cov0" title="0">select </span>{
+        case &lt;-w.done:<span class="cov0" title="0">
+                close(w.ResChan)
+                close(w.ErrChan)
+                close(w.ReqChan)
+                return</span>
+        default:<span class="cov0" title="0">
+                w.ResChan &lt;- resp</span>
+        }
+}
+
+func (w *taskWorker) list(f models.TaskJobModel) <span class="cov8" title="1">{
+        req := dto.ListTaskRequest{
+                Status: f.Status,
+        }
+        resp, err := w.service.List(f.Context, req)
+        if err != nil </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov0" title="0">
+                        close(w.ResChan)
+                        close(w.ErrChan)
+                        close(w.ReqChan)
+                        return</span>
+                default:<span class="cov8" title="1">
+                        w.ErrChan &lt;- err
+                        return</span>
+                }
+        }
+        <span class="cov0" title="0">select </span>{
+        case &lt;-w.done:<span class="cov0" title="0">
+                close(w.ResChan)
+                close(w.ErrChan)
+                close(w.ReqChan)
+                return</span>
+        default:<span class="cov0" title="0">
+                w.ResChan &lt;- resp</span>
+        }
+}
+
+func (w *taskWorker) worker() <span class="cov8" title="1">{
+        defer w.Wg.Done()
+
+        for </span><span class="cov8" title="1">{
+                select </span>{
+                case &lt;-w.done:<span class="cov8" title="1">
+                        w.mu.Lock()
+                        w.workerCount--
+                        if w.workerCount == 0 </span><span class="cov8" title="1">{
+                                w.logger.Info("all workers closed.")
+                        }</span>
+                        <span class="cov8" title="1">w.mu.Unlock()
+                        return</span>
+                case f := &lt;-w.ReqChan:<span class="cov8" title="1">
+                        switch f.JOB </span>{
+                        case "GET":<span class="cov8" title="1">
+                                w.get(f)</span>
+                        case "SET":<span class="cov8" title="1">
+                                w.set(f)</span>
+                        case "DELETE":<span class="cov8" title="1">
+                                w.delete(f)</span>
+                        case "UPDATE":<span class="cov8" title="1">
+                                w.update(f)</span>
+                        case "LIST":<span class="cov8" title="1">
+                                w.list(f)</span>
+                        }
+                }
+        }
+}
+</pre>
+		
+		<pre class="file" id="file15" style="display: none">package httphandler
+
+import (
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/workerservice"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/basehttphandler"
+        "log/slog"
+        "net/http"
+        "time"
+)
+
+type HTTPHandler interface {
+        Set(http.ResponseWriter, *http.Request)
+        Get(http.ResponseWriter, *http.Request)
+        Update(http.ResponseWriter, *http.Request)
+        Delete(http.ResponseWriter, *http.Request)
+        List(http.ResponseWriter, *http.Request)
+}
+
+type httpHandler struct {
+        service taskservice.TaskService
+        pool    workerservice.TaskWorker
+        basehttphandler.Handler
+}
+
+type StoreHandlerOption func(*httpHandler)
+
+func WithPool(pool workerservice.TaskWorker) StoreHandlerOption <span class="cov8" title="1">{
+        return func(handler *httpHandler) </span><span class="cov8" title="1">{
+                handler.pool = pool
+        }</span>
+}
+
+func WithService(service taskservice.TaskService) StoreHandlerOption <span class="cov8" title="1">{
+        return func(handler *httpHandler) </span><span class="cov8" title="1">{
+                handler.service = service
+        }</span>
+}
+
+func WithContextTimeout(d time.Duration) StoreHandlerOption <span class="cov8" title="1">{
+        return func(handler *httpHandler) </span><span class="cov8" title="1">{
+                handler.CancelTimeout = d
+        }</span>
+}
+
+func WithLogger(l *slog.Logger) StoreHandlerOption <span class="cov8" title="1">{
+        return func(handler *httpHandler) </span><span class="cov8" title="1">{
+                handler.Logger = l
+        }</span>
+}
+
+func New(opts ...StoreHandlerOption) HTTPHandler <span class="cov8" title="1">{
+        handler := &amp;httpHandler{
+                Handler: basehttphandler.Handler{},
+        }
+        for _, opt := range opts </span><span class="cov8" title="1">{
+                opt(handler)
+        }</span>
+        <span class="cov8" title="1">return handler</span>
+}
+</pre>
+		
+		<pre class="file" id="file16" style="display: none">package httphandler
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
+        "net/http"
+        "strconv"
+)
+
+// @Tags Task
+// @Summary Delete Task by ID.
+// @Description This endpoint is used for deleting a task based on its ID.
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id query integer true "Task ID required to delete"
+// @Success 200 {object} string "Success Response Body Delete Successfully."
+// @Failure 400 {object} util.ErrorResponse "Bad Request Response. Invalid request parameters."
+// @Failure 404 {object} util.ErrorResponse "Not Found Response. No task found with the specified ID."
+// @Failure 500 {object} util.ErrorResponse "Internal Server Error. Server encountered an error."
+// @Router /delete [delete]
+func (h *httpHandler) Delete(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var (
+                req models.TaskJobModel
+        )
+        ctx, cancel := context.WithTimeout(r.Context(), h.CancelTimeout)
+        defer cancel()
+        if r.Method != http.MethodDelete </span><span class="cov8" title="1">{
+                h.JSON(
+                        w,
+                        http.StatusMethodNotAllowed,
+                        fmt.Sprintf(constant.ErrMethodNotAllowed, r.Method),
+                )
+                return
+        }</span>
+        // @Step: Check Query Params
+        <span class="cov8" title="1">if len(r.URL.Query()) == 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("query parameters required", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">_id := r.URL.Query().Get("id")
+        id, err := strconv.Atoi(_id)
+        if err != nil </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("invalid query parameters", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">if id == 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("invalid query parameters", http.StatusBadRequest),
+                )
+                return
+        }</span>
+
+        <span class="cov8" title="1">req.ID = uint(id)
+        req.JOB = "DELETE"
+        req.Context = ctx
+
+        // @Step: Submit to Pool
+        if _, err = h.pool.Submit(req); err != nil </span><span class="cov8" title="1">{
+                // @Step: Handle Errors
+                if errors.Is(err, context.DeadlineExceeded) </span><span class="cov8" title="1">{
+                        h.JSON(w,
+                                http.StatusGatewayTimeout,
+                                util.BasicError(constant.ErrContextDeadline, http.StatusGatewayTimeout),
+                        )
+                        return
+                }</span>
+                <span class="cov8" title="1">var cusErr *customerror.Error
+                if errors.As(err, &amp;cusErr) </span><span class="cov8" title="1">{
+                        clientMessage := cusErr.Message
+                        if cusErr.Data != nil </span><span class="cov0" title="0">{
+                                data, ok := cusErr.Data.(string)
+                                if ok </span><span class="cov0" title="0">{
+                                        clientMessage = clientMessage + ", " + data
+                                }</span>
+                        }
+                        <span class="cov8" title="1">if cusErr.Loggable </span><span class="cov8" title="1">{
+                                h.Logger.Error("httphandler Delete service.Delete", "err", clientMessage)
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrIDNotFound </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrDelete </span><span class="cov0" title="0">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                }
+                <span class="cov8" title="1">h.JSON(w,
+                        http.StatusInternalServerError,
+                        util.BasicError(err.Error(), http.StatusInternalServerError),
+                )
+                return</span>
+        }
+        // @Step: Return Success Response
+        <span class="cov8" title="1">h.JSON(w,
+                http.StatusOK,
+                util.Response(http.StatusOK, constant.DeletedSuccessfully),
+        )</span>
+}
+</pre>
+		
+		<pre class="file" id="file17" style="display: none">package httphandler
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
+        "net/http"
+        "strconv"
+)
+
+// @Tags Task
+// @Summary Get Task by ID.
+// @Description This endpoint is used for retrieving a task based on its ID.
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id query integer true "Task ID to retrieve" ExampleRequest
+// @Success 200 {object} dto.TaskResponse "Success Response Body. Task details with the specified ID."
+// @Failure 400 {object} util.ErrorResponse "Error Bad Request Response. Invalid request parameters."
+// @Failure 404 {object} util.ErrorResponse "Error Not Found Response. No task found with the specified ID."
+// @Failure 500 {object} util.ErrorResponse "Error Internal Server. Server encountered an error."
+// @Router /get [get]
+func (h *httpHandler) Get(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var (
+                req models.TaskJobModel
+        )
+        ctx, cancel := context.WithTimeout(r.Context(), h.CancelTimeout)
+        defer cancel()
+        if r.Method != http.MethodGet </span><span class="cov8" title="1">{
+                h.JSON(
+                        w,
+                        http.StatusMethodNotAllowed,
+                        fmt.Sprintf(constant.ErrMethodNotAllowed, r.Method),
+                )
+                return
+        }</span>
+        // @Step: Check Query Params
+        <span class="cov8" title="1">if len(r.URL.Query()) == 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("query parameters required", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">_id := r.URL.Query().Get("id")
+        id, err := strconv.Atoi(_id)
+        if err != nil </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("invalid query parameters", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">if id == 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("invalid query parameters", http.StatusBadRequest),
+                )
+                return
+        }</span>
+
+        <span class="cov8" title="1">req.ID = uint(id)
+        req.JOB = "GET"
+        req.Context = ctx
+
+        // @Step: Submit to Pool
+        res, err := h.pool.Submit(req)
+        if err != nil </span><span class="cov8" title="1">{
+                // @Step: Handle Errors
+                if errors.Is(err, context.DeadlineExceeded) </span><span class="cov8" title="1">{
+                        h.JSON(w,
+                                http.StatusGatewayTimeout,
+                                util.BasicError(constant.ErrContextDeadline, http.StatusGatewayTimeout),
+                        )
+                        return
+                }</span>
+                <span class="cov8" title="1">var cusErr *customerror.Error
+                if errors.As(err, &amp;cusErr) </span><span class="cov8" title="1">{
+                        clientMessage := cusErr.Message
+                        if cusErr.Data != nil </span><span class="cov0" title="0">{
+                                data, ok := cusErr.Data.(string)
+                                if ok </span><span class="cov0" title="0">{
+                                        clientMessage = clientMessage + ", " + data
+                                }</span>
+                        }
+                        <span class="cov8" title="1">if cusErr.Loggable </span><span class="cov8" title="1">{
+                                h.Logger.Error("httphandler Get service.Get", "err", clientMessage)
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrIDNotFound </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                }
+                <span class="cov8" title="1">h.JSON(w,
+                        http.StatusInternalServerError,
+                        util.BasicError(err.Error(), http.StatusInternalServerError),
+                )
+                return</span>
+        }
+        // @Step: Return Success Response
+        <span class="cov8" title="1">h.JSON(w,
+                http.StatusOK,
+                util.Response(http.StatusOK, res),
+        )
+        return</span>
+}
+</pre>
+		
+		<pre class="file" id="file18" style="display: none">package httphandler
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/basehttphandler"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
+        "net/http"
+)
+
+// @Tags Task
+// @Summary List Tasks by Status.
+// @Description This endpoint is used for retrieving a list of tasks based on their status.
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param         request body dto.ListTaskRequest true "Task List Request Body with Status"
+// @Success 200 {array} dto.TaskResponse "Success Response Body. List of tasks matching the specified status."
+// @Failure 400 {object} util.ErrorResponse "Error Bad Request Response. Invalid request parameters."
+// @Failure 404 {object} util.ErrorResponse "Error Not Found Response. No tasks found with the specified status."
+// @Failure 500 {object} util.ErrorResponse "Error Internal Server. Server encountered an error."
+// @Router /list [post]
+func (h *httpHandler) List(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var (
+                req models.TaskJobModel
+        )
+        ctx, cancel := context.WithTimeout(r.Context(), h.CancelTimeout)
+        defer cancel()
+        if r.Method != http.MethodPost </span><span class="cov8" title="1">{
+                h.JSON(
+                        w,
+                        http.StatusMethodNotAllowed,
+                        fmt.Sprintf(constant.ErrMethodNotAllowed, r.Method),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">if len(r.URL.Query()) &gt; 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("query parameters not required", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        // @Step: Validate Request
+        <span class="cov8" title="1">resp, err := basehttphandler.Validate[dto.ListTaskRequest](r)
+        if err != nil </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError(err.Error(), http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">resp.(dto.ListTaskRequest).TaskJobMapper(&amp;req)
+        req.JOB = "LIST"
+
+        req.Context = ctx
+        // @Step: Submit to Pool
+        res, err := h.pool.Submit(req)
+        if err != nil </span><span class="cov8" title="1">{
+                // @Step: Handle Errors
+                if errors.Is(err, context.DeadlineExceeded) </span><span class="cov8" title="1">{
+                        h.JSON(w,
+                                http.StatusGatewayTimeout,
+                                util.BasicError(constant.ErrContextDeadline, http.StatusGatewayTimeout),
+                        )
+                        return
+                }</span>
+                <span class="cov8" title="1">var cusErr *customerror.Error
+                if errors.As(err, &amp;cusErr) </span><span class="cov8" title="1">{
+                        clientMessage := cusErr.Message
+                        if cusErr.Data != nil </span><span class="cov0" title="0">{
+                                data, ok := cusErr.Data.(string)
+                                if ok </span><span class="cov0" title="0">{
+                                        clientMessage = clientMessage + ", " + data
+                                }</span>
+                        }
+
+                        <span class="cov8" title="1">if cusErr.Loggable </span><span class="cov8" title="1">{
+                                h.Logger.Error("httphandler List service.List", "err", clientMessage)
+                        }</span>
+
+                        <span class="cov8" title="1">if cusErr == customerror.ErrGetAll </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                }
+                <span class="cov8" title="1">h.JSON(w,
+                        http.StatusInternalServerError,
+                        util.BasicError(err.Error(), http.StatusInternalServerError),
+                )
+                return</span>
+        }
+        // @Step: Return Success Response
+        <span class="cov8" title="1">h.JSON(w,
+                http.StatusOK,
+                util.Response(http.StatusOK, res),
+        )</span>
+}
+</pre>
+		
+		<pre class="file" id="file19" style="display: none">package httphandler
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/basehttphandler"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
+        "net/http"
+)
+
+// @Tags Task
+// @Summary                 Task Create.
+// @Description         This endpoint is used for creating a new task.
+// @Accept                        json
+// @Produce                        json
+// @Security                BearerAuth
+// @Param                         request body dto.SetTaskRequest true "Task Set Request Body"
+// @Success                 200 {object} dto.TaskResponse "Success Response Body"
+// @Failure                 400 {object} util.ErrorResponse "Error Bad Request Response"
+// @Failure                 404 {object} util.ErrorResponse "Error Not Found Response"
+// @Failure                 500 {object} util.ErrorResponse "Error Internal Server"
+// @Router                         /set [post]
+func (h *httpHandler) Set(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var (
+                req models.TaskJobModel
+        )
+        ctx, cancel := context.WithTimeout(context.Background(), h.CancelTimeout)
+        defer cancel()
+        if r.Method != http.MethodPost </span><span class="cov8" title="1">{
+                h.JSON(
+                        w,
+                        http.StatusMethodNotAllowed,
+                        fmt.Sprintf(constant.ErrMethodNotAllowed, r.Method),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">if len(r.URL.Query()) &gt; 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("query parameters not required", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        // @Step: Validate Request
+        <span class="cov8" title="1">resp, err := basehttphandler.Validate[dto.SetTaskRequest](r)
+        if err != nil </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError(err.Error(), http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">resp.(dto.SetTaskRequest).TaskJobMapper(&amp;req)
+        req.JOB = "SET"
+        req.Context = ctx
+
+        // @Step: Submit to Pool
+        res, err := h.pool.Submit(req)
+        if err != nil </span><span class="cov8" title="1">{
+                // @Step: Handle Errors
+                if errors.Is(err, context.DeadlineExceeded) </span><span class="cov8" title="1">{
+                        h.JSON(w,
+                                http.StatusGatewayTimeout,
+                                util.BasicError(constant.ErrContextDeadline, http.StatusGatewayTimeout),
+                        )
+                        return
+                }</span>
+                <span class="cov8" title="1">var cusErr *customerror.Error
+                if errors.As(err, &amp;cusErr) </span><span class="cov8" title="1">{
+                        clientMessage := cusErr.Message
+                        if cusErr.Data != nil </span><span class="cov0" title="0">{
+                                data, ok := cusErr.Data.(string)
+                                if ok </span><span class="cov0" title="0">{
+                                        clientMessage = clientMessage + ", " + data
+                                }</span>
+                        }
+                        <span class="cov8" title="1">if cusErr.Loggable </span><span class="cov8" title="1">{
+                                h.Logger.Error("httphandler Set service.Set", "err", clientMessage)
+                        }</span>
+
+                        <span class="cov8" title="1">if cusErr == customerror.ErrIDExists </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrSet </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                }
+                <span class="cov8" title="1">h.JSON(w,
+                        http.StatusInternalServerError,
+                        util.BasicError(err.Error(), http.StatusInternalServerError),
+                )
+                return</span>
+        }
+        // @Step: Return Success Response
+        <span class="cov8" title="1">h.JSON(w,
+                http.StatusOK,
+                util.Response(http.StatusOK, res),
+        )</span>
+}
+</pre>
+		
+		<pre class="file" id="file20" style="display: none">package httphandler
+
+import (
+        "context"
+        "errors"
+        "fmt"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/basehttphandler"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
+        "github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
+        "net/http"
+)
+
+// @Tags Task
+// @Summary Task Update.
+// @Description This endpoint is used for updating an existing task.
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.UpdateTaskRequest true "Task Update Request Body. Take ID and Update Fields"
+// @Success 200 {object} dto.TaskResponse "Success Response Body"
+// @Failure 400 {object} util.ErrorResponse "Error Bad Request Response"
+// @Failure 404 {object} util.ErrorResponse "Error Not Found Response"
+// @Failure 500 {object} util.ErrorResponse "Error Internal Server Response"
+// @Router /update [put]
+func (h *httpHandler) Update(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        var (
+                req models.TaskJobModel
+        )
+        ctx, cancel := context.WithTimeout(r.Context(), h.CancelTimeout)
+        defer cancel()
+        if r.Method != http.MethodPut </span><span class="cov8" title="1">{
+                h.JSON(
+                        w,
+                        http.StatusMethodNotAllowed,
+                        fmt.Sprintf(constant.ErrMethodNotAllowed, r.Method),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">if len(r.URL.Query()) &gt; 0 </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError("query parameters not required", http.StatusBadRequest),
+                )
+                return
+        }</span>
+        // @Step: Validate Request
+        <span class="cov8" title="1">resp, err := basehttphandler.Validate[dto.UpdateTaskRequest](r)
+        if err != nil </span><span class="cov8" title="1">{
+                h.JSON(w,
+                        http.StatusBadRequest,
+                        util.BasicError(err.Error(), http.StatusBadRequest),
+                )
+                return
+        }</span>
+        <span class="cov8" title="1">resp.(dto.UpdateTaskRequest).TaskJobMapper(&amp;req)
+        req.JOB = "UPDATE"
+        req.Context = ctx
+
+        // @Step: Submit to Pool
+        res, err := h.pool.Submit(req)
+        if err != nil </span><span class="cov8" title="1">{
+                // @Step: Handle Errors
+                if errors.Is(err, context.DeadlineExceeded) </span><span class="cov8" title="1">{
+                        h.JSON(w,
+                                http.StatusGatewayTimeout,
+                                util.BasicError(constant.ErrContextDeadline, http.StatusGatewayTimeout),
+                        )
+                        return
+                }</span>
+                <span class="cov8" title="1">var cusErr *customerror.Error
+                if errors.As(err, &amp;cusErr) </span><span class="cov8" title="1">{
+                        clientMessage := cusErr.Message
+                        if cusErr.Data != nil </span><span class="cov0" title="0">{
+                                data, ok := cusErr.Data.(string)
+                                if ok </span><span class="cov0" title="0">{
+                                        clientMessage = clientMessage + ", " + data
+                                }</span>
+                        }
+                        <span class="cov8" title="1">if cusErr.Loggable </span><span class="cov8" title="1">{
+                                h.Logger.Error("httphandler Update service.Update", "err", clientMessage)
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrIDNotFound </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                        <span class="cov8" title="1">if cusErr == customerror.ErrUpdate </span><span class="cov8" title="1">{
+                                h.JSON(w,
+                                        http.StatusNotFound,
+                                        util.BasicError(clientMessage, http.StatusNotFound),
+                                )
+                                return
+                        }</span>
+                }
+                <span class="cov8" title="1">h.JSON(w,
+                        http.StatusInternalServerError,
+                        util.BasicError(err.Error(), http.StatusInternalServerError),
+                )
+                return</span>
+        }
+        // @Step: Return Success Response
+        <span class="cov8" title="1">h.JSON(w,
+                http.StatusOK,
+                util.Response(http.StatusOK, res),
+        )</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
