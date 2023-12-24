@@ -38,8 +38,7 @@ func TestListWithTimeout(t *testing.T) {
 			submitErr: context.DeadlineExceeded,
 		}),
 	)
-	body := `{"status":"active"}`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/list?status=active", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)
@@ -53,9 +52,9 @@ func TestListWithTimeout(t *testing.T) {
 	}
 }
 
-func TestListQueryParamNotRequired(t *testing.T) {
+func TestListQueryParamRequired(t *testing.T) {
 	handler := httphandler.New()
-	req := httptest.NewRequest(http.MethodPost, "/list?status=active", nil)
+	req := httptest.NewRequest(http.MethodGet, "/list", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)
@@ -63,15 +62,15 @@ func TestListQueryParamNotRequired(t *testing.T) {
 	if w.Code != http.StatusBadRequest {
 		t.Errorf("wrong status code, want %v got %v", http.StatusBadRequest, w.Code)
 	}
-	shouldContain := "query parameters not required"
+	shouldContain := "query parameters required"
 	if !strings.Contains(w.Body.String(), shouldContain) {
 		t.Errorf("wrong body message, want %v got %v", shouldContain, w.Body.String())
 	}
 }
 
-func TestListEmptyBody(t *testing.T) {
+func TestListInvalidParams(t *testing.T) {
 	handler := httphandler.New()
-	req := httptest.NewRequest(http.MethodPost, "/list", nil)
+	req := httptest.NewRequest(http.MethodGet, "/list?status=./...", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)
@@ -79,47 +78,7 @@ func TestListEmptyBody(t *testing.T) {
 	if w.Code != http.StatusBadRequest {
 		t.Errorf("wrong status code, want %v got %v", http.StatusBadRequest, w.Code)
 	}
-	shouldContain, err := json.Marshal(util.BasicError("request body is empty", http.StatusBadRequest))
-	if err != nil {
-		t.Errorf("error while marshalling error: %v", err)
-	}
-	if !strings.Contains(w.Body.String(), string(shouldContain)) {
-		t.Errorf("wrong body message, want %v got %v", shouldContain, w.Body.String())
-	}
-}
-
-func TestListInvalidBody(t *testing.T) {
-	handler := httphandler.New()
-	body := `{"statuss":"active"`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
-	w := httptest.NewRecorder()
-
-	handler.List(w, req)
-
-	if w.Code != http.StatusBadRequest {
-		t.Errorf("wrong status code, want %v got %v", http.StatusBadRequest, w.Code)
-	}
-	shouldContain, err := json.Marshal(util.BasicError("unexpected EOF", http.StatusBadRequest))
-	if err != nil {
-		t.Errorf("error while marshalling error: %v", err)
-	}
-	if !strings.Contains(w.Body.String(), string(shouldContain)) {
-		t.Errorf("wrong body message, want %v got %v", string(shouldContain), w.Body.String())
-	}
-}
-
-func TestListInvalidBody2(t *testing.T) {
-	handler := httphandler.New()
-	body := `{"stat":"active"}`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
-	w := httptest.NewRecorder()
-
-	handler.List(w, req)
-
-	if w.Code != http.StatusBadRequest {
-		t.Errorf("wrong status code, want %v got %v", http.StatusBadRequest, w.Code)
-	}
-	shouldContain, err := json.Marshal(util.BasicError("Key: 'ListTaskRequest.Status' Error:Field validation for 'Status' failed on the 'required' tag", http.StatusBadRequest))
+	shouldContain, err := json.Marshal(util.BasicError("invalid query parameters", http.StatusBadRequest))
 	if err != nil {
 		t.Errorf("error while marshalling error: %v", err)
 	}
@@ -135,8 +94,7 @@ func TestListErrUnknown(t *testing.T) {
 			submitErr: customerror.ErrUnknown,
 		}),
 	)
-	body := `{"status":"active"}`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/list?status=okey", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)
@@ -160,8 +118,7 @@ func TestListErrGetAll(t *testing.T) {
 			submitErr: customerror.ErrGetAll,
 		}),
 	)
-	body := `{"status":"active"}`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodGet, "/list?status=passive", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)
@@ -203,8 +160,8 @@ func TestListSuccess(t *testing.T) {
 		},
 		),
 	)
-	body := `{"status":"active"}`
-	req := httptest.NewRequest(http.MethodPost, "/list", strings.NewReader(body))
+
+	req := httptest.NewRequest(http.MethodGet, "/list?status=success", nil)
 	w := httptest.NewRecorder()
 
 	handler.List(w, req)

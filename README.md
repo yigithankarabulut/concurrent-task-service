@@ -12,7 +12,7 @@ Concurrent TaskService is a Go application designed to handle incoming HTTP requ
 #### all: Builds and starts both the application and database services.
 #### down: Stops and removes the running containers.
 #### re: Cleans up all containers and volumes, then rebuilds and starts everything from scratch.
-#### clean: Removes all containers, volumes, and unused Docker images for a thorough cleanup.
+#### clean: Removes all containers, volumes, and unused Docker images for a thorough cleanup. " Warning: This will remove all Docker images on your system."
 #### db: Starts only the MySQL database service.
 #### app: Starts only the application service.
 
