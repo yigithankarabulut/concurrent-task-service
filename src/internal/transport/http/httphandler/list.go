@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"github.com/yigithankarabulut/ConcurrentTaskService/src/internal/customerror"
 	"github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
-	"github.com/yigithankarabulut/ConcurrentTaskService/src/internal/service/taskservice/dto"
-	"github.com/yigithankarabulut/ConcurrentTaskService/src/internal/transport/http/basehttphandler"
 	"github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/constant"
 	"github.com/yigithankarabulut/ConcurrentTaskService/src/pkg/util"
 	"net/http"
+	"strings"
 )
 
 // @Tags Task
@@ -19,19 +18,19 @@ import (
 // @Accept json
 // @Produce json
 // @Security BearerAuth
-// @Param 	request body dto.ListTaskRequest true "Task List Request Body with Status"
+// @Param 	status query string true "Task Status to retrieve" ExampleRequest
 // @Success 200 {array} dto.TaskResponse "Success Response Body. List of tasks matching the specified status."
 // @Failure 400 {object} util.ErrorResponse "Error Bad Request Response. Invalid request parameters."
 // @Failure 404 {object} util.ErrorResponse "Error Not Found Response. No tasks found with the specified status."
 // @Failure 500 {object} util.ErrorResponse "Error Internal Server. Server encountered an error."
-// @Router /list [post]
+// @Router /list [get]
 func (h *httpHandler) List(w http.ResponseWriter, r *http.Request) {
 	var (
 		req models.TaskJobModel
 	)
 	ctx, cancel := context.WithTimeout(r.Context(), h.CancelTimeout)
 	defer cancel()
-	if r.Method != http.MethodPost {
+	if r.Method != http.MethodGet {
 		h.JSON(
 			w,
 			http.StatusMethodNotAllowed,
@@ -39,25 +38,33 @@ func (h *httpHandler) List(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	if len(r.URL.Query()) > 0 {
+	if len(r.URL.Query()) == 0 {
 		h.JSON(w,
 			http.StatusBadRequest,
-			util.BasicError("query parameters not required", http.StatusBadRequest),
+			util.BasicError("query parameters required", http.StatusBadRequest),
 		)
 		return
 	}
-	// @Step: Validate Request
-	resp, err := basehttphandler.Validate[dto.ListTaskRequest](r)
-	if err != nil {
+	stat := r.URL.Query().Get("status")
+	if stat == "" {
 		h.JSON(w,
 			http.StatusBadRequest,
-			util.BasicError(err.Error(), http.StatusBadRequest),
+			util.BasicError("invalid query parameters", http.StatusBadRequest),
 		)
 		return
 	}
-	resp.(dto.ListTaskRequest).TaskJobMapper(&req)
+	invalidChars := []string{"<", ">", "!", "=", "(", ")", ";", ":", ",", "\"", "/", "\\", "?", "@", "[", "]", "{", "}", " ", "."}
+	for _, c := range invalidChars {
+		if strings.Contains(stat, c) || len(stat) > 255 {
+			h.JSON(w,
+				http.StatusBadRequest,
+				util.BasicError("invalid query parameters", http.StatusBadRequest),
+			)
+			return
+		}
+	}
+	req.Status = stat
 	req.JOB = "LIST"
-
 	req.Context = ctx
 	// @Step: Submit to Pool
 	res, err := h.pool.Submit(req)

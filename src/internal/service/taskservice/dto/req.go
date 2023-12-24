@@ -3,10 +3,10 @@ package dto
 import "github.com/yigithankarabulut/ConcurrentTaskService/src/internal/models"
 
 type SetTaskRequest struct {
-	ID          uint   `json:"id" validate:"required"`
-	Title       string `json:"title" validate:"required"`
-	Description string `json:"description" validate:"required"`
-	Status      string `json:"status" validate:"required"`
+	ID          uint   `json:"id" validate:"required,numeric"`
+	Title       string `json:"title" validate:"required,max=255,min=3"`
+	Description string `json:"description" validate:"required,max=255,min=3"`
+	Status      string `json:"status" validate:"required,max=255,min=3"`
 }
 
 type GetTaskRequest struct {
