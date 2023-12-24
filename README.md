@@ -5,10 +5,10 @@ Concurrent TaskService is a Go application designed to handle incoming HTTP requ
 
 ### Requirements
 
-Go 1.21.5
-Docker and Docker Compose installed on your system.
-Make Commands:
+##### Go 1.21.5
+##### Docker and Docker Compose installed on your system.
 
+#### Make Commands:
 #### all: Builds and starts both the application and database services.
 #### down: Stops and removes the running containers.
 #### re: Cleans up all containers and volumes, then rebuilds and starts everything from scratch.
