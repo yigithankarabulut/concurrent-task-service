@@ -1,21 +1,20 @@
 basePath: /task
 definitions:
-  dto.ListTaskRequest:
-    properties:
-      status:
-        type: string
-    required:
-    - status
-    type: object
   dto.SetTaskRequest:
     properties:
       description:
+        maxLength: 255
+        minLength: 3
         type: string
       id:
         type: integer
       status:
+        maxLength: 255
+        minLength: 3
         type: string
       title:
+        maxLength: 255
+        minLength: 3
         type: string
     required:
     - description
@@ -156,18 +155,17 @@ paths:
       tags:
       - Task
   /list:
-    post:
+    get:
       consumes:
       - application/json
       description: This endpoint is used for retrieving a list of tasks based on their
         status.
       parameters:
-      - description: Task List Request Body with Status
-        in: body
-        name: request
+      - description: Task Status to retrieve
+        in: query
+        name: status
         required: true
-        schema:
-          $ref: '#/definitions/dto.ListTaskRequest'
+        type: string
       produces:
       - application/json
       responses:

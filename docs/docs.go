@@ -149,7 +149,7 @@ const docTemplate = `{
             }
         },
         "/list": {
-            "post": {
+            "get": {
                 "security": [
                     {
                         "BearerAuth": []
@@ -168,13 +168,11 @@ const docTemplate = `{
                 "summary": "List Tasks by Status.",
                 "parameters": [
                     {
-                        "description": "Task List Request Body with Status",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.ListTaskRequest"
-                        }
+                        "type": "string",
+                        "description": "Task Status to retrieve",
+                        "name": "status",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -324,17 +322,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "dto.ListTaskRequest": {
-            "type": "object",
-            "required": [
-                "status"
-            ],
-            "properties": {
-                "status": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.SetTaskRequest": {
             "type": "object",
             "required": [
@@ -345,16 +332,22 @@ const docTemplate = `{
             ],
             "properties": {
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 3
                 },
                 "id": {
                     "type": "integer"
                 },
                 "status": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 3
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 3
                 }
             }
         },
