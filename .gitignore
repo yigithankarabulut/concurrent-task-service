@@ -1,0 +1,16 @@
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.iml
+*.ipr
+*.iws
+.idea/
+/build/
+/dist/
+/out/
+go.work
+.env
+.vscode/

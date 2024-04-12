@@ -1,0 +1,11 @@
+mode: set
+coverage: 100.0% of statements
+ok      github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror     0.001s
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:28.45,31.2 2 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:33.32,35.2 1 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:37.44,40.2 2 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:42.43,45.2 2 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:47.32,48.18 1 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:48.18,50.3 1 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:51.2,51.18 1 1
+github.com/yigithankarabulut/ConcurrentTaskService/internal/customerror/customerror.go:54.46,59.2 1 1

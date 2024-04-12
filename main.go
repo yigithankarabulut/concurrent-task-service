@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/yigithankarabulut/ConcurrentTaskService/src/apiserver"
 	"log"
 	"os"
+
+	"github.com/yigithankarabulut/ConcurrentTaskService/apiserver"
 )
 
 // @Title           Task API
