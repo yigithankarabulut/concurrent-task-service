@@ -19,7 +19,7 @@ Concurrent TaskService is a Go application designed to handle incoming HTTP requ
 ## Accessing Swagger UI:
 
 Once the application is running access the Swagger UI documentation at: http://localhost:8080/swagger
-Using Postman Collection:
+## Using Postman Collection:
 
 A Postman collection has been included for convenient API testing. Import the collection to explore and interact with the API endpoints.
 
